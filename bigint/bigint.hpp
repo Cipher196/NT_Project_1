@@ -1,7 +1,6 @@
 #pragma once
 
 #include "my_std.h"
-#include <cstdint>
 
 class bigint {
 private:
@@ -51,25 +50,26 @@ private:
 public:
   bool ip() const { return isPositive; }
 
-  void flipSign() { 
-    if(!(digits.size()==1&&digits[0]==0)){
-      isPositive=!isPositive;
+  void flipSign() {
+    if (!(digits.size() == 1 && digits[0] == 0)) {
+      isPositive = !isPositive;
     }
   }
 
-  const vector<uint64_t>& get_digits() const { return digits;}
-  
-  vector<uint64_t>& get_digit() { return digits;}
+  const vector<uint64_t> &get_digits() const { return digits; }
 
+  vector<uint64_t> &get_digit() { return digits; }
+
+  void at(size_t i, uint64_t val) { digits[i] = val; }
 
   bigint(long long val = 0) {
     uint64_t absVal;
     if (val < 0) {
       isPositive = false;
-      absVal = static_cast<uint64_t>(-(val+1))+1;
+      absVal = static_cast<uint64_t>(-(val + 1)) + 1;
     } else {
       isPositive = true;
-      absVal=(uint64_t)val;
+      absVal = (uint64_t)val;
     }
 
     digits.push_back(absVal);
@@ -77,6 +77,11 @@ public:
   }
 
   bigint(const std::string &s) { from_string(s); }
+
+  bigint(vector<uint64_t> v, bool sign) {
+    digits = v;
+    isPositive = sign;
+  }
 
   void from_string(const string &s) {
     digits.clear();

@@ -1,20 +1,46 @@
-#include "arithmetic.hpp"
-
+#include "bigint.hpp"
+#include "karatsuba.hpp"
+#include <chrono>
+#include <random>
 
 int main() {
-  string a, b;
-  cout<<"Please provide first number to add: ";
-  cin>>a;
-  cout<<"Please provide second number to add: ";
-  cin>>b;
+  int n = 21;
+  cout << "Please provide a value to n: ";
+  cin >> n;
+  int k = 1e9;
 
-  bigint x(a);
-  bigint y(b);
+  bigint c(rand() % k);
+  n--;
 
-  bigint z=subtract(x,y);
+  while (n--)
+    c.get_digit().push_back(rand() % k);
 
-  string c=z.to_string();
+  string sc = c.to_string();
+  cout << "c = " << sc << '\n';
 
-  cout<<"Their sum is "<<c;
+  auto t1 = std::chrono::high_resolution_clock::now();
+  bigint a = multiply_naive(c, c);
+  auto t2 = std::chrono::high_resolution_clock::now();
+
+  float time1 =
+      float(std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1)
+                .count()) /
+      1000;
+
+  auto t3 = std::chrono::high_resolution_clock::now();
+  bigint b = multiply_karatsuba(c, c);
+  auto t4 = std::chrono::high_resolution_clock::now();
+
+  auto time2 =
+      float(std::chrono::duration_cast<std::chrono::milliseconds>(t4 - t3)
+                .count()) /
+      1000;
+
+  cout << "We are computing c^2 ... \n";
+
+  cout << "\nTime taken by naive multiply : " << time1 << " Sec\n\n";
+
+  cout << "Time taken by karatsuba multiply : " << time2 << " Sec\n\n";
+
   return 0;
 }

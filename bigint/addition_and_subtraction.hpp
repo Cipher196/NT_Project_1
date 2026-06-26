@@ -1,4 +1,4 @@
-// arithmetic.hpp
+// addition_and_subtraction.hpp
 #pragma once
 
 #include "bigint.hpp"
